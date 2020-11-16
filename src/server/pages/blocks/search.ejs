@@ -1,0 +1,110 @@
+<div class="container">
+  <div class="form-row">
+    <div class="offset-md-4 col-md-4">
+      <div class="input-group">
+       
+        <input id="search-box"  onkeyup="clear()" class="form-control"  style="border-radius: 10px 0 0 10px; color: black !important;" type="text" placeholder="Search" autocomplete="off" />
+      
+        <div class="input-group-append">
+          <button id="search-btn" class="btn btn-light my-2 my-sm-0" type="button">
+            <i class="fa fa-search"></i> Search
+          </button>
+        </div>
+      </div>
+      <ul id="re" class="theresults">
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  $(function(params) {
+    const searchBtn = $("#search-btn");
+    searchBtn.click(function(event) {
+      event.preventDefault();
+      const searchBox = $("#search-box");
+      const searchTerm = searchBox.val();
+      if (searchTerm) {
+        searchBtn.addClass("disabled");
+        location.replace(`/search?q=${searchTerm}`);
+      }
+    });
+  });
+  setInterval(() => {
+    $("#search-box").keypress()
+  }, 1000)
+  
+  $('#search-box').bind('keyup', function() {
+$(".thing").remove()
+    const searchBox = $("#search-box");
+    const searchTerm = searchBox.val();
+  
+    if (searchTerm) {
+
+      $.ajax({
+        url: `https://expressbots.glitch.me/search/api?q=${searchTerm}`,
+        type: "get",
+        responseType: "json",
+        success: function(resp) {
+       
+          var guilds = [];
+          var maxl = resp.bots.length > 3 ? 3 : resp.bots.length
+          for (let i = 0; i < maxl; i++) {
+            if(resp.bots.length){
+         guilds.push(`<a class="text-light searchatag" href="/bots/${resp.bots[i].bot}"><li class="thing list-group-item list-group-item-info text-light searchresult"><img src="https://cdn.discordapp.com/avatars/${resp.bots[i].bot}/${resp.bots[i].avatar}.png?size=4096" class="rounded idk"> ${resp.bots[i].name}</li></a>`)
+            }
+          }
+          $("#re").html(guilds.join(''));
+          
+        }
+      });
+    }
+  });
+
+</script>
+<style>
+  #search-box {
+    background-color: transparent;
+    color: white;
+
+    border: 1px #2C2F33 solid;
+  }
+
+  #search-btn {
+    border: none;
+    color: white;
+    border-radius: 0 10px 10px 0;
+    background-color: #3C3A4F;
+  }
+  
+  #search-btn:hover {
+    background:#343245;
+  }
+  
+  .searchresult {
+    background:rgba(0,204,204,0.3);
+    transition:0.2s;
+  }
+  .idk{
+    width: 32px;
+    height: 32px;
+  }
+  .searchresult:hover {
+    background:rgba(0,204,204,0.3);
+  }
+  .searchatag {
+    text-decoration:none !important;
+  }
+  
+  .searchresult img{
+    height: 32px;
+    width: 32px;
+  }
+  
+  .theresults {
+    padding:0;
+    position:absolute;
+    z-index:100;
+    width:100%;
+}
+
+</style>

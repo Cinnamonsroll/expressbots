@@ -1,0 +1,241 @@
+<html>
+  <head>
+    <title><%= bot2.name %> - expressbots</title>
+<%- include("./blocks/header.ejs") %>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.1.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.26.0/sanitize-html.min.js"></script>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=512">
+      <meta property="og:title" content="<%= bot2.name %>" />
+
+<meta property="og:type" content="website" />
+<meta property="og:description" content="<%= bot2.shortDesc %>" />
+<meta name="description" content="<%= bot2.shortDesc %>" />
+<meta name="og:image" content="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=512" />
+<meta name="theme-color" content="#2F3136" />
+  </head>
+  <body>
+    <%- include("./blocks/navbar.ejs") %>
+
+    <div class="container">
+      <% if(bot2.approved === false){ %>
+       <center>
+   <div class="row" role="alert">
+     <div class="col-md-12" role="alert">
+       <div class="alert alert-primary alert-danger" role="alert">
+         <h4 class="alert-heading">Oops, there is a problem...</h4>
+         <p class="mb-0"><bold>This bot has not been approved!</bold></p>
+      </div>
+    </div>
+  </div>
+ </center>
+    <%   } %>
+      <div class="jumbotron mt-5" style="color: #D9E4EC !important;">
+        <div class="row" style="width: 100%;">
+          <div class="col-sm-2">
+
+                <% if(bot2.tags.includes("nsfw")){ %>
+              <img class="card-img-top rounded-circle blur" src="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=1024" /><br />
+<% }else{ %>
+              <img class="card-img-top rounded-circle" src="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=1024" /><br />
+              <% } %>
+
+            
+             
+               
+                 <% if (bot2.tags.length) { %>
+
+                    <% bot2.tags.forEach(tag => { %>
+            <a href="/search?q=<%= tag %>"><span class="badge badge-dark"><%= tag %></span></a>
+                    <% }) %>
+                </p>
+            <% } %>
+          </div>
+          <div class="col-sm">
+            <% if(bot2.verified === true){ %>
+            <h3 class="name"><%= bot2.name %> <i title="Discord verified" class="fas fa-medal"></i></h3>
+           <% if(bot2.status === "online"){ %>
+             <div class="status online"></div> <p>
+            🟢 Online
+            </p>
+            <% }else if(bot2.status === "idle"){ %>
+              <div class="status idle"></div> <p>
+            🟡 Idle
+            </p>
+            <% }else if(bot2.status === "dnd"){ %>
+             <div class="status dnd"></div> <p>
+           🔴 Dnd
+            </p>
+            <% }else if(bot2.status === "offline"){ %>
+            <div class="status offline" ></div> <p>
+            ⚫ Offline
+            </p>
+            <% } %>
+            <% }else{ %>
+            <h3 class="name"><%= bot2.name %></h3>
+             <% if(bot2.status === "online"){ %>
+             <div class="status online"></div> <p>
+            🟢 Online
+            </p>
+            <% }else if(bot2.status === "idle"){ %>
+              <div class="status idle"></div> <p>
+            🟡 Idle
+            </p>
+            <% }else if(bot2.status === "dnd"){ %>
+             <div class="status dnd"></div> <p>
+           🔴 Dnd
+            </p>
+            <% }else if(bot2.status === "offline"){ %>
+            <div class="status offline" ></div> <p>
+            ⚫ Offline
+            </p>
+            <% } %>
+            <% } %>
+          
+           <p>
+             Prefix: <%= bot2.prefix %>
+            </p>
+
+
+              <hr class="my-4">
+              <div class="btn-group">
+              <% if(bot2.invite){ %>
+              <a href="<%= bot2.invite %>" type="button" class="btn btn-success btn-sm"><i class="fas fa-user-plus"></i> Add</a>
+              <% } %>
+                 <% if(bot2.support){ %>
+              <a href="<%= bot2.support %>" type="button" class="btn btn-info btn-sm"><i class="fas fa-paper-plane"></i> Support</a>
+              <% } %>
+                
+                <% if(bot2.website){ %>
+                <a href="<%= bot2.website %>" type="button" class="btn btn-info btn-sm"><i class="fas fa-window-restore"></i> Wesbite</a>
+<% } %>
+                <% if(bot2.github){ %>
+                <a href="<%= bot2.github %>" type="button" class="btn btn-info btn-sm"><i class="fas fa-github"></i> Github</a>
+<% } %>
+          <% if(user && bot2.owners.map(o => o.toString()).includes(user.id)){  %>
+              <a href="/bots/<%= bot2.bot %>/edit" type="button" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i> Edit</a>
+              <% } %>
+           <% if(user && bot2.owners.map(o => o.toString()).includes(user.id)){  %>
+                <button   data-toggle="modal" data-target="#deleteMod" data-bot="<%= bot2.name %>"  data-id="<%= bot2.bot %>" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+              <% } %>
+                <a href="/bots/<%= bot2.bot %>/vote" type="button" class="btn btn-info btn-sm"><i class="fas fa-chevron-circle-up"></i> Vote</a>
+              
+</div>
+
+        </div>
+        </div>
+      </div>
+    <hr>
+    <h1>
+      Other info
+    </h1>
+   <span class="badge btn-info" title="votes"><i class="fas fa-chevron-circle-up" aria-hidden="true"></i> <%= bot2.votes %></span>
+    <a href="/search?q=<%= bot2.lib %>" title="library"><span class="badge btn-info"><i class="fas fa-file-code" aria-hidden="true"></i> <%= bot2.lib %></span></a>
+      <span  class="badge btn-info" title="servers"><i class="fas fa-server" aria-hidden="true"></i> <%= bot2.servers %></span>
+     <span class="badge btn-info" title="views"><i class="fas fa-eye" aria-hidden="true"></i> <%= bot2.views %></span>
+     <span class="badge btn-info" title="unique views"><i class="fas fa-eye-slash" aria-hidden="true"></i> <%= bot2.uniqueViews %></span>
+    <hr>
+  
+    <% if(bot2.owners.filter(o => o !== "").length >= 2){ %>
+      <h2>
+      Owners
+    </h2>
+    <% for(let i = 0; i < bot2.owners.length; i++) { %> 
+    <a class="owner" href="/user/<%= bot2.owners[i] %>"><img class="rounded-circle idk" src="https://cdn.discordapp.com/avatars/<%= bot.users.cache.get(bot2.owners[i]).id %>/<%= bot.users.cache.get(bot2.owners[i]).avatar %>.png?size=1024"> <%= bot.users.cache.get(bot2.owners[i]).tag %></a>
+    <% } %>
+   <% }else{ %>
+      <h2>
+      Owner
+    </h2>
+     <a class="owner" href="/user/<%= bot2.owners[0] %>"><img class="rounded-circle idk" src="https://cdn.discordapp.com/avatars/<%= bot.users.cache.get(bot2.owners[0]).id %>/<%= bot.users.cache.get(bot2.owners[0]).avatar %>.png?size=1024"> <%= bot.users.cache.get(bot2.owners[0]).tag %></a>
+    <% } %>
+    <hr>
+      <div class="info">
+
+
+
+         </div>
+        <div class="card bg-dark mb-3 text-light">
+          <div class="card-body" >
+            <div id="bot-description" style="white-space:pre-wrap;"><%= bot2.desc %></div>
+
+          </div>
+        </div>
+    </div>
+    <div class="modal fade bg-gradient-info" id="deletemod" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete Page</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form class="mb-0" id="formfordeleting" method="POST">
+              <div class="modal-body pb-0">
+                <div class="form-group">
+                    <label for="form_phone">Enter <code class="text-danger" id="wheretitleis"></code> to delete</label>
+                    <input autocomplete="off" type="text" name="title" maxlength="30" class="form-control" value="" id="placeholderthingy" required />
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a class="btn btn-secondary" data-dismiss="modal">Cancel <i arial-hidden="true" class="fas fa-ban"></i></a>
+                <button type="submit" class="btn btn-danger btn-loader-delete" id="buttondeletething" disabled>Delete <i arial-hidden="true" class="fas fa-trash"></i></button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+  </body>
+ <script>
+   $('#deletemod').on('show.bs.modal', function (event) {
+  let button = $(event.relatedTarget)
+  let recipient = button.data('bot')
+  let recipient2 = button.data('id')
+    let modal = $(this)
+   
+ modal.find('#wheretitleis').text(recipient)
+ modal.find('#placeholderthingy').attr("placeholder", recipient)
+ modal.find("#formfordeleting").attr("action", `/bots/${recipient2}/delete`)
+ let input = modal.find('#placeholderthingy')
+$(input).keyup(function() {
+ if(input.val().toString() !== recipient.toString()){
+ modal.find('#buttondeletething').prop("disabled", true)
+ }else{
+  modal.find('#buttondeletething').prop("disabled", false)
+ }
+})
+})
+    $(document).ready(function() {
+      const descriptionBox = $("#bot-description");
+      const descriptionBoxText = descriptionBox.text() || descriptionBox.val();
+      const markdownRender = marked(descriptionBoxText);
+      const allowedTags = sanitizeHtml.defaults.allowedTags.concat(["img", "center"]);
+      const sanitizedRender = sanitizeHtml(markdownRender, {
+        allowedTags
+      });
+      descriptionBox.html(sanitizedRender);
+    });
+
+  </script>
+<style>
+   .idk{
+    width: 32px;
+      height: 32px;
+  }
+  .owner{
+    color: #D9E4EC;
+    text-decoration: none;
+  }
+  .owner:hover{
+     color: #D9E4EC;
+    text-decoration: none;
+}
+  .status{
+    margin: -15px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+}
+</style>
+</html>

@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>Queue</title>
+<%- include("./blocks/header.ejs") %>
+  </head>
+  <body>
+    <%- include("./blocks/navbar.ejs") %>
+    <div class="container" style="color: #D9E4EC;">
+        <div class="jumbotron" style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;">
+        <h2>Queue</h2>
+        <p class="lead">Bots in the  queue will appear here.</p>
+      </div>
+      <div class="bots-list">
+        <br />
+        <h5>Awaiting Approval</h5>
+        <table class="table table-hover" style="color: #D9E4EC;">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">Prefix</th>
+              <th scope="col">Tag</th>
+              <th scope="col">ID</th>
+              <th scope="col">Actions</th>
+              <th scope="col">Approve</th>
+              <th scope="col">Deny</th>
+            </tr>
+          </thead>
+          <tbody class="bots-list-body" style="color: #D9E4EC;">
+            <% for(let i = 0; i < queue.length; i++){ %>
+            <tr></tr>
+            <td style="color: #D9E4EC;"><%= i+1 %>.</td>
+            <td style="color: #D9E4EC;"><%= queue[i].prefix %></td>
+            <td style="color: #D9E4EC;">
+              <img
+                src="https://cdn.discordapp.com/avatars/<%= queue[i].bot %>/<%= queue[i].avatar %>.png?size=32"
+                class="rounded-circle"
+              />
+              <%= queue[i].tag %>
+            </td>
+            <td style="color: #D9E4EC;"><%= queue[i].bot %></td>
+            <td style="color: #D9E4EC;">
+              <a
+                target="__blank"
+                href="https://discordapp.com/oauth2/authorize?client_id=<%= queue[i].bot %>&scope=bot&permissions=0&guild_id=<%= bot.config.guilds.testing %>"
+                class="btn btn-primary"
+                >Invite</a
+              >
+              <a
+                href="/bots/<%= queue[i].bot%>"
+                type="button"
+                class="btn btn-warning"
+                >View</a
+              >
+            </td>
+          <td style="color: #D9E4EC;">
+           
+            
+                <a
+                target="__blank"
+                href="https://discordapp.com/oauth2/authorize?client_id=<%= queue[i].bot %>&scope=bot&permissions=0&guild_id=<%= bot.config.guilds.main %>"
+                class="btn btn-success"
+                >Approve</a
+              >
+              
+            </td>
+            <td style="color: #D9E4EC;">
+               <form action="/queue/deny/<%= queue[i].bot %>" method="POST">
+                <button type="submit" class="btn btn-danger">Deny</button>
+              </form>
+            </td>
+
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+ 
+</html>

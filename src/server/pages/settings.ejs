@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bot List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.1.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.26.0/sanitize-html.min.js"></script>
+    <%- include("./blocks/header.ejs") %>
+  </head>
+  <body>
+    <%- include("./blocks/navbar.ejs", { bot, user }) %>
+    <div class="col-lg-7 card server-form-panel" style="background-color: #5f889e !important;">
+   
+        <form action="/me/settings/save" method="POST">
+    
+          <h5>Description</h5>
+          <div class="form-group input-group" >
+            <div class="input-group-prepend">
+              <span style="background-color: #e9ecef;"class="input-group-text"
+                ><i class="fa fa-info" style="padding:0; color: black;" aria-hidden="true"></i
+              ></span>
+            </div>
+            <input
+           
+              id="bio"
+              name="bio"
+              class="form-control"
+              placeholder="A description about your self"
+              type="text"
+              maxlength="300"
+                   required
+                   value="<%= bio %>"
+            />
+          </div>
+         
+        <button type="submit" class="btn btn-success">
+          Save
+        </button>
+          </div>
+        </form>
+      
+    </div>
+   
+  </body>
+
+  <style>
+    .bio{
+      background-color:#2f3136;
+    }
+    .card{
+ position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+    border-radius: 10px;
+      
+      
+    }
+    .form-group.required label:after {
+      content: " *";
+      color: red;
+    }
+  </style>
+</html>
