@@ -1,0 +1,20 @@
+token: "" # bot token
+invite: "" #support server invite
+prefix: "" #bot prefix
+mongo: "" # mongo db url
+guilds:
+    main: "" #main guild id
+    testing: "" #guild id for testing
+channels:
+    logs: "" #channel id of log channel
+roles:
+    bottester: "" #role id of bot testers
+    bots: "" #role id of bots
+    developers: "" #role id of bot developer
+port: 4000
+bot:
+    id: "" #bot id
+    secret: "" #bot secret
+    redirect: "" #https://<url>/auth/callback
+    scopes:
+        - identify

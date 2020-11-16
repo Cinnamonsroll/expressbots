@@ -1,0 +1,273 @@
+<html>
+  <head>
+    <title>Edit bot</title>
+<%- include("./blocks/header.ejs") %>
+  </head>
+  <body>
+    <%- include("./blocks/navbar.ejs") %>
+    <div class="container">
+      <% if(error){ %>
+      <center>
+   <div class="row" role="alert">
+     <div class="col-md-12" role="alert">
+       <div class="alert alert-primary alert-<%= error.type %>" role="alert">
+         <button type="button" class="close" data-dismiss="alert">×</button>
+         <h4 class="alert-heading">Oops, there is a problem..</h4>
+         <%- error.html %>
+      </div>
+    </div>
+  </div>
+ </center>
+<% }else{ %>
+      <div class="jumbotron" style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;">
+            <h2>Edit your bot</h2>
+            <p>Edit the information about your bot in the below Form</p>
+        </div>
+      <div class="card bg-dark">
+        <div class="card-body">
+          
+        
+      <div class="form">
+            <form id="editform" action="/bots/<%= userbot.bot %>/edit" method="POST" onsubmit="return validateForm()">
+                <div class="form-group required">
+                    <label for="botPrefix">Prefix</label>
+                    <input type="text" class="form-control" value="<%= userbot.prefix %>" id="botPrefix" placeholder="<%= bot.config.prefix %>" onkeyup="setValidation($(this), checkValid($(this)))" autocomplete="off">
+                </div>
+              <div class="form-group required">
+                    <label for="botShortDesc">Short Description</label>
+                    <input type="text" class="form-control" id="botShortDesc" aria-describedby="botShortDeschelp" value="<%= userbot.shortDesc %>" placeholder="Revolutionary bot with..." onkeyup="setValidation($(this), checkValid($(this), 'char_100'))" autocomplete="off">
+                    <small id="botShortDeschelp" class="form-text special-mute">Short Description about the bot (Min. 50 & Max. 100 characters)</small>
+                </div>
+                <div class="form-group required">
+                    <label for="botLongDesc">Long Description</label>
+                    <textarea class="form-control" id="botLongDesc" rows="3" placeholder="More about the Revolution..." onkeyup="setValidation($(this), checkValid($(this), 'char_300'))" autocomplete="off"><%= userbot.desc %></textarea>
+                    <small id="botLongDeschelp" class="form-text special-mute">Markdown can be used (Min. 300 characters)</small>
+                </div>
+              <div class="form-group">
+                    <label for="botWebsite">Website</label>
+                    <input type="url" class="form-control" value="<%= userbot.website || `` %>" id="botWebsite" placeholder="https://expressbots.glitch.me" autocomplete="off">
+                </div>
+              <div class="form-group">
+                    <label for="Github">Github</label>
+                    <input type="url" value="<%= userbot.github || `` %>" class="form-control" id="github" autocomplete="off">
+                </div>
+              <div class="form-group">
+                    <label for="botSupport">Support Server</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">https://discord.gg/</span>
+                        </div>
+                        <input type="text" value="<%= userbot.support || `` %>" class="form-control" id="botSupport" placeholder="cet7Nn5t9x" autocomplete="off">
+                    </div>
+                </div>
+               <label for="botInvite">Invite URL</label>
+                    <input type="url" value="<%= userbot.invite || `` %>"  class="form-control" id="botInvite" aria-describedby="botInvitehelp" placeholder="https://discordapp.com/oauth2/authorize?client_id=<%= bot.user.id %>&scope=bot&permissions=8" autocomplete="off">
+                    <small id="botInvitehelp" class="form-text special-mute">Can be generated at <a target="__blank" href="https://discordapi.com/permissions.html">Discord API Permissions</a></small>
+                </div>
+           <div class="form-group input-group required">
+           
+               <div class="input-group-prepend">
+                  <span id="test" class="input-group-text"><i class="fas fa-book" style="padding:0"></i></span>
+               </div>
+               <select class="custom-select" id="library" name="library" required>
+                  <option>Choose...</option>
+                  <option value="discord.js" <% if(userbot.lib === "discord.js"){%> selected <% } %> >discord.js</option>
+                  <option value="eris" <% if(userbot.lib === "eris"){%> selected <% } %>>Eris</option>
+                  <option value="discord.py" <% if(userbot.lib === "discord.py"){%> selected <% } %>>discord.py</option>
+                  <option value="jda" <% if(userbot.lib === "jda"){%> selected <% } %>>JDA</option>
+                  <option value="klasa" <% if(userbot.lib === "klasa"){%> selected <% } %>>Klasa</option>
+                  <option value="komada" <% if(userbot.lib === "komada"){%> selected <% } %>>Komada</option>
+                  <option value="commando" <% if(userbot.lib === "commando"){%> selected <% } %>>Commando</option>
+                  <option value="akario" <% if(userbot.lib === "akario"){%> selected <% } %>>Akairo</option>
+                  <option value="yambf" <% if(userbot.lib === "yambf"){%> selected <% } %>>YAMBF</option>
+                  <option value="discordcr" <% if(userbot.lib === "discordcr"){%> selected <% } %>>discordcr</option>
+                  <option value="discord.net" <% if(userbot.lib === "discord.net"){%> selected <% } %>>Discord.Net</option>
+                  <option value="dsharpplus" <% if(userbot.lib === "dsharpplus"){%> selected <% } %>>DSharpPlus</option>
+                  <option value="dscord" <% if(userbot.lib === "dscord"){%> selected <% } %>>dscord</option>
+                  <option value="discordgo" <% if(userbot.lib === "discordgo"){%> selected <% } %>>DiscordGo</option>
+                  <option value="discord4j" <% if(userbot.lib === "discord4j"){%> selected <% } %>>Discord4j</option>
+                  <option value="discordia" <% if(userbot.lib === "discordia"){%> selected <% } %>>Discordia</option>
+                  <option value="restcord" <% if(userbot.lib === "restcord"){%> selected <% } %>>RestCord</option>
+                  <option value="yasmin" <% if(userbot.lib === "yasmin"){%> selected <% } %>>Yasmin</option>
+                  <option value="disco" <% if(userbot.lib === "disco"){%> selected <% } %>>disco</option>
+                  <option value="discordrb" <% if(userbot.lib === "discordrb"){%> selected <% } %>>discordrb</option>
+                  <option value="discord-rs" <% if(userbot.lib === "discord-rs"){%> selected <% } %>>discord-rs</option>
+                  <option value="sword" <% if(userbot.lib === "sword"){%> selected <% } %>>Sword</option>
+                  <option value="other" <% if(userbot.lib === "other"){%> selected <% } %>>Other</option>
+               </select>
+            </div>
+         <div class="form-group" id="tags-box" style="webkit-user-select: none; -ms-user-select: none; user-select: none;">
+        <label class="mb-0" data-toggle="tooltip" title="Categorize your server by keywords (e.g. game title)"><strong class="text-light">Categories</strong></label>
+        <small class="form-text special-mute mt-0 mb-2">Max. 6 tags</small>
+        <% tags.forEach((c,i) => { %>
+        <div class="form-check form-check-inline" style="width: 150px; margin-left: 10px;">
+            <input type="checkbox" class="custom-control-input" id="tag-<%= c %>" value="<%= c %>" name="tag" <% if (userbot.tags.includes(c)) { %> checked <% } %></input>
+            <label class="custom-control-label"  for="tag-<%= c %>"><%= c.toProperCase() %></label>
+        </div>
+           
+        <% }); %>
+    </div>
+          <div class="alert alert-dismissible alert-danger" id="form-error-popup" style="display: none;"></div>
+               
+                <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+      </div>
+          </div>
+        <div class="card bg-dark">
+        <div class="card-body">
+          
+        
+      <div class="form">
+            <form id="apikeyform" action="/bots/<%= userbot.bot %>/genapi" method="POST">
+              <% if(userbot.apiToken){ %>
+                 <div class="form-group">
+                    <label for="apitoken">Api key</label>
+                    <input  id="apitokeninput" value="<%= userbot.apiToken %>" class="form-control" id="apitoken" autocomplete="off" readonly>
+                </div>
+               <button type="submit" class="btn btn-success">Regenerate</button>
+              <% }else{ %>
+               <div class="form-group">
+                    <label for="apitoken">Api key</label>
+                    <input  id="apitokeninput" class="form-control" id="apitoken" autocomplete="off" readonly>
+                </div>
+                <button type="submit" class="btn btn-success">Generate</button>
+              <% } %>
+        </form>
+          </div>
+            </div>
+            
+      <% } %>
+    </div>
+        </div>
+        
+  </body>
+  <style>
+.form-group.required label:after {
+    content:" *";
+    color:red;
+}
+    .special-mute:{
+      color:#679FC2;
+    }
+</style>
+
+  
+<script>
+  $("#apikeyform").submit(function (event) {
+      event.preventDefault();
+    let form = $(this)
+      $.ajax({
+            type: form.attr("method"),
+            url: form.attr("action"),
+            dataType: "json",
+            contentType: 'application/json',
+            success: function (resp) {
+              document.getElementById("apitokeninput").value = resp.token
+            }
+        });
+    });
+$(function() {
+    $(".editform").submit(function (event) {
+        event.preventDefault();
+        const validated = validateForm();
+        if(!validated) return
+    
+        const form = $(this);
+        const tags = [];
+        $.each($("input[name='tag']:checked"), function() {
+            tags.push($(this).val());
+        });
+        const data = {
+            prefix: $("#botPrefix").val() || null,
+            description: {
+                short: $("#botShortDesc").val() || null,
+                long: $("#botLongDesc").val() || null
+            },
+          github: $("#github").val || null,
+            website: $("#botWebsite").val() || null,
+            support: $("#botSupport").val() || null,
+            invite: $("#botInvite").val() || null,
+          libary: $("#library").val() || null,
+            tags,
+        };
+        $.ajax({
+            type: form.attr("method"),
+            url: form.attr("action"),
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function () {
+                window.location.replace("/?edit=success");
+            },
+            error: function (resp) {
+                if(resp.responseJSON.code === "INVALID_BOT") {
+                    setValidation($("#botID"), false);
+                }
+                $("#form-error-popup").html(`<strong>${resp.responseJSON.message}</strong>`).css("display", "block");
+            }
+        });
+    });
+});
+function validateForm() {
+    let INVALID_STUFFS = 0;
+    /* Prefix */
+    const botPrefix = $("#botPrefix");
+    if(botPrefix) {
+        const isValid = checkValid(botPrefix);
+        setValidation(botPrefix, isValid);
+        if(!isValid) INVALID_STUFFS += 1;
+    }
+    /* Short Desc */
+    const botShortDesc = $("#botShortDesc");
+    if(botShortDesc) {
+        const isValid = checkValid(botShortDesc);
+        setValidation(botShortDesc, isValid, "char_100");
+        if(!isValid) INVALID_STUFFS += 1;
+    }
+    /* Long Desc */
+    const botLongDesc = $("#botLongDesc");
+    if(botLongDesc) {
+        const isValid = checkValid(botLongDesc);
+        setValidation(botLongDesc, isValid, "char_300");
+        if(!isValid) INVALID_STUFFS += 1;
+    }
+  const lib = $("#library")
+  if(lib){
+    const isValid = checkValid(lib)
+   setValidation(lib, isValid);
+      if(!isValid) INVALID_STUFFS += 1;
+  }
+    const isValid = INVALID_STUFFS === 0;
+    if(!isValid) $("#form-error-popup").text(`Oh snap! ${INVALID_STUFFS} invalid inputs were found! Click submit after fixing them.`).css("display", "block");
+    return isValid;
+}
+function checkValid(div, key) {
+    if(!div.val()) return false;
+    if(key && key === "char_100" && !(div.val().length >= 50 && div.val().length <= 100)) return false;
+    if(key &&  key === "char_300" && div.val().length <= 300) return false;
+    return true;
+}
+function setValidation(div, valid) {
+    const INVALID_CLASS = "is-invalid";
+    const VALID_CLASS = "is-valid";
+    if(valid) {
+        if(div.hasClass(INVALID_CLASS)) div.removeClass(INVALID_CLASS);
+        div.addClass(VALID_CLASS);
+    } else {
+        if(div.hasClass(VALID_CLASS)) div.removeClass(VALID_CLASS);
+        div.addClass(INVALID_CLASS);
+    }
+}
+const longDesc = $('#botLongDesc');
+
+$(".custom-control-input").on('change', function() {
+    const tags = [];
+    $.each($("input[name='tag']:checked"), function() {
+        tags.push($(this).val());
+    });
+    if(tags.length > 6) {
+        this.checked = false;
+    }
+});
+</script>
+</html>

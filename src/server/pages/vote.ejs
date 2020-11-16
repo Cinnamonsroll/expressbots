@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/2.3.2/moment-duration-format.min.js"></script>
+    <%- include("./blocks/header.ejs") %>
+</head>
+<body>
+    <%- include("./blocks/navbar.ejs", { bot, user }) %>
+<div id="spaceiscool"></div>
+    <div class="container">
+        <div class="jumbotron mt-5">
+            <div class="row" style="width: 100%;">
+                <div class="col-sm-2">
+                     <% if(bot2.tags.includes("nsfw")){ %>
+              <img class="card-img-top rounded-circle blur" src="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=1024"  /><br />
+<% }else{ %>
+              <img class="card-img-top rounded-circle" src="https://cdn.discordapp.com/avatars/<%= bot2.bot %>/<%= bot2.avatar %>.png?size=1024>"  /><br />
+              <% } %>
+                </div>
+                <div class="col-sm">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h3 style="color: #D9E4EC !important;"><%= bot2.name %></h3>
+                            <p class="text-muted" style="color: #D9E4EC !important;">You can upvote every 24-hours</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="btn btn-danger mb-2" style="font-size: 16px;">Upvotes: <%= bot2.votes %></span><br>
+                           
+                            <a href="/bots/<%= bot2.bot %>" class="btn btn-success" style="font-size: 16px;">Bot Info</a>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" id="upvote">Click to vote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+const upvoteBtn = $("#upvote");
+
+$(function () {
+    upvoteBtn.click(function (event) {
+        event.preventDefault();
+        if(upvoteBtn.hasClass("disabled")) return;
+    
+        $.ajax({
+            type: "post",
+            responseType: "json",
+            url: "/bots/<%= bot2.bot %>/vote",
+            success: function (resp) {
+                upvoteBtn.addClass("disabled");
+                if(resp.ok) {
+                    upvoteBtn.text("Voted!");
+                } else if(!resp.ok && resp.remaining) {
+                    upvoteBtn.text(`Seems like you have already voted! Come back after ${moment.duration(resp.remaining).format('H[h] m[m] s[s]')}`);
+                } else {
+                    upvoteBtn.text(`Oopsie! ${resp.reason}`);
+                }
+            }
+        });
+    });
+});
+</script>
+<style>
+  .blur{
+      filter: blur(8px);
+  -webkit-filter: blur(8px);
+    transition:0.2s;
+    }
+    .blur:hover{
+      filter: blur(0px);
+  -webkit-filter: blur(0px);
+    }
+  #spaceiscool {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+</style>
+
+<%- include("./blocks/footer.ejs") %>
+</html>

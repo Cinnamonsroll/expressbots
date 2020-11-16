@@ -1,0 +1,85 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+ 
+  <button
+    class="navbar-toggler"
+    type="button"
+          
+    data-toggle="collapse"
+    data-target="#navbarColor02"
+    aria-controls="navbarColor02"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link"  href="/"
+          ><i class="fas fa-home"></i> Home <span class="sr-only">(current)</span></a
+        >
+         
+      </li>
+    <li class="nav-item">  <a class="nav-link"  href="/bots"
+          ><i class="fas fa-robot"></i> Bots</a
+        ></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <% if (user) { %>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle  pl-3 pr-3"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+       
+          aria-haspopup="true"
+          aria-expanded="false"
+          
+          ><img
+            class="rounded-circle idk"
+            src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=4096"
+          />
+          <%= user.username %></a
+        >
+        
+        <div class="dropdown-menu dropdown-menu-right" style="background-color: #6AABD2; border-color: #6AABD2; border-radius: 10px;">
+           <a class="dropdown-item hoverlol"  style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;"href="/me"><i class="fas fa-person"></i> Profile</a>
+             <a class="dropdown-item hoverlol" style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;"  href="/bots/add">Add Bot</a>
+         
+          <div class="dropdown-divider" style="background-color: #D9E4EC; border-color: #D9E4EC;">
+            
+          </div>
+          <a class="dropdown-item hoverlol"  style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;" href="/logout">Logout</a>
+<% if(user.staff){ %>
+          <div class="dropdown-divider" style="background-color: #D9E4EC; border-color: #D9E4EC;">
+            
+          </div>
+             <a class="dropdown-item hoverlol"  style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;" href="/queue">Queue</a>
+          <% } %>
+    
+        </div>
+      </li>
+      <% } else { %>
+      <li class="nav-item">
+        <a href="/login" style="background-color: #6AABD2; border-color: #6AABD2; color: #D9E4EC;" class="btn btn-dark   pl-3 pr-3 mr-3">Login</a>
+      </li>
+      <% } %>
+    </ul>
+  
+  </div>
+  
+</nav>
+<style>
+  .idk{
+    width: 32px;
+      height: 32px;
+  }
+  .hoverlol:hover{
+    background-color: #679FC2 !important;
+    border-color: #679FC2 !important;
+  }
+</style>
