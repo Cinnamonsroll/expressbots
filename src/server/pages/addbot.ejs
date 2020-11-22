@@ -181,10 +181,8 @@ $("#owners").val().split(" ").forEach(owner => {
                 window.location.replace("/?type=success");
             },
             error: function (resp) {
-                if(resp.responseJSON.code === "INVALID_BOT") {
-                    setValidation($("#botID"), false);
-                }
-                $("#form-error-popup").html(`<strong>${resp.responseJSON.message}</strong>`).css("display", "block");
+              
+                $("#form-error-popup").html(`<strong>${resp.message}</strong>`).css("display", "block");
             }
         });
     });
