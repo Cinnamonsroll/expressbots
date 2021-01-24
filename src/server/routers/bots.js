@@ -300,7 +300,7 @@ module.exports = client => {
     bot.views = parseInt(bot.views) + 1;
     await bot.save();
     let db = require("quick.db");
-    if (req.user.id) {
+    if (req.user && req.user.id) {
       db.fetch(`${id}_${req.user.id}`) &&
       db.fetch(`${id}_${req.user.id}`) === true
         ? ""
