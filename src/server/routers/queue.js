@@ -19,6 +19,7 @@ module.exports = client => {
   });
   router.post("/deny/:id", checkAuth, async (req,res) => {
      let guild = client.guilds.cache.get(client.config.guilds.main);
+    if(!id)  return res.redirect("/")
     let id = req.pararms.id
      if (!req.user.staff) return res.redirect("/");
     let model = require("../.././models/bot.js");
